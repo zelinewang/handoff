@@ -11,7 +11,7 @@ HOOK="$(cd "$(dirname "${BASH_SOURCE[0]}")/../hooks" && pwd)/dispatch-gate.sh"
 pass=0; fail=0
 
 # run_case NAME EXPECTED_EXIT EXPECT_STDERR(yes|no) ENV_KV JSON
-# ENV_KV: "" for a clean env (CONDUCTOR_STRICT unset), or "CONDUCTOR_STRICT=1".
+# ENV_KV: "" for a clean env (HANDOFF_STRICT unset), or "HANDOFF_STRICT=1".
 run_case() {
     local name="$1" exp_exit="$2" exp_err="$3" env_kv="$4" json="$5"
     local err_file rc has_err ok
@@ -19,7 +19,7 @@ run_case() {
     if [[ -n "$env_kv" ]]; then
         printf '%s' "$json" | env "$env_kv" bash "$HOOK" >/dev/null 2>"$err_file"
     else
-        printf '%s' "$json" | env -u CONDUCTOR_STRICT bash "$HOOK" >/dev/null 2>"$err_file"
+        printf '%s' "$json" | env -u HANDOFF_STRICT bash "$HOOK" >/dev/null 2>"$err_file"
     fi
     rc=$?
     has_err="no"; [[ -s "$err_file" ]] && has_err="yes"
@@ -50,8 +50,8 @@ run_case "DISPATCH-keyword" 0 no "" \
 run_case "bare-default-nudge" 0 yes "" \
     '{"tool_name":"Agent","tool_input":{"prompt":"Refactor the auth module and add tests.","subagent_type":"claude"}}'
 
-# (4) bare prompt, CONDUCTOR_STRICT=1 → block WITH stderr
-run_case "bare-strict-block" 2 yes "CONDUCTOR_STRICT=1" \
+# (4) bare prompt, HANDOFF_STRICT=1 → block WITH stderr
+run_case "bare-strict-block" 2 yes "HANDOFF_STRICT=1" \
     '{"tool_name":"Agent","tool_input":{"prompt":"Refactor the auth module and add tests.","subagent_type":"claude"}}'
 
 # (5) explicit READ-ONLY marker → allow, silent
@@ -79,7 +79,7 @@ run_case "review-starts-with" 0 no "" \
     '{"tool_name":"Agent","tool_input":{"prompt":"Review the diff for correctness bugs.","subagent_type":"claude"}}'
 
 # (11) read-only PASS still wins under STRICT (strict never overrides a PASS)
-run_case "read-only-under-strict" 0 no "CONDUCTOR_STRICT=1" \
+run_case "read-only-under-strict" 0 no "HANDOFF_STRICT=1" \
     '{"tool_name":"Agent","tool_input":{"prompt":"READ-ONLY consult: assess the approach.","subagent_type":"claude"}}'
 
 echo "─────────────────────────────────────────────"

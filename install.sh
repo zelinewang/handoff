@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# install.sh — install the conductor skill into a Claude Code setup.
+# install.sh — install the handoff skill into a Claude Code setup.
 #
 # What it does:
-#   1. Copies skill/ -> ~/.claude/skills/conductor/ (backs up any existing dir).
+#   1. Copies skill/ -> ~/.claude/skills/handoff/ (backs up any existing dir).
 #   2. Prints two CLAUDE.md snippets for you to paste in (a trigger row + a
 #      model-tiering section). It does NOT edit CLAUDE.md or settings.json —
 #      you stay in control of what your harness auto-loads.
@@ -10,7 +10,7 @@
 # Usage:
 #   bash install.sh [--dry-run] [--dest DIR]
 #     --dry-run   show what would happen; change nothing
-#     --dest DIR  install target (default: ~/.claude/skills/conductor)
+#     --dest DIR  install target (default: ~/.claude/skills/handoff)
 #
 # Idempotent: safe to re-run — each run backs up an existing install to
 # <dest>.bak.<timestamp> before copying fresh, so nothing is silently lost.
@@ -19,7 +19,7 @@ set -eu
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SRC="$SCRIPT_DIR/skill"
-DEST="${HOME}/.claude/skills/conductor"
+DEST="${HOME}/.claude/skills/handoff"
 DRY=0
 
 while [ $# -gt 0 ]; do
@@ -38,7 +38,7 @@ if [ ! -d "$SRC" ]; then
   exit 1
 fi
 
-say "conductor installer"
+say "handoff installer"
 say "  source : $SRC"
 say "  target : $DEST"
 [ "$DRY" -eq 1 ] && say "  mode   : DRY-RUN (nothing will change)"
@@ -73,7 +73,7 @@ say ""
 say "[1] Skill trigger row — add to your MCP/skill auto-selection table:"
 say ""
 cat <<'SNIPPET'
-| Delegating implementation / saving lead-model tokens / spec-tracked dispatch / cross-session handoff | conductor skill | Brain writes a DISPATCH spec file -> routes to a subagent on a strong non-lead model (default) / an external CLI agent / an async agent queue; STATE.md ledger = handoff source of truth |
+| Delegating implementation / saving lead-model tokens / spec-tracked dispatch / cross-session handoff | handoff skill | Brain writes a DISPATCH spec file -> routes to a subagent on a strong non-lead model (default) / an external CLI agent / an async agent queue; STATE.md ledger = handoff source of truth |
 SNIPPET
 say ""
 say "[2] Model-tiering rule — add as a section:"
@@ -88,4 +88,4 @@ explicit model — an omitted model silently inherits the lead model = zero savi
 - NEVER use a fork to save cost — forks always inherit the parent model.
 SNIPPET
 say ""
-say "Done. See docs/porting.md to adapt conductor to a non-Claude-Code harness."
+say "Done. See docs/porting.md to adapt handoff to a non-Claude-Code harness."

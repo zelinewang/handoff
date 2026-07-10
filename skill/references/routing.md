@@ -1,4 +1,4 @@
-# Conductor Channel Operations
+# Handoff Channel Operations
 
 Channel mechanics for the Routing Tree in `SKILL.md`. Each channel documents
 **When / Invoke / Steer / Cost & limits / Evidence return**. The CLI flags below

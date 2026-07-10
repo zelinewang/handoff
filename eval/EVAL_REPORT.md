@@ -1,4 +1,4 @@
-# Conductor Skill — Pre-Registered Eval Report
+# Handoff Skill — Pre-Registered Eval Report
 
 > Completed 2026-07-09 (UTC). Protocol: EVAL_PROTOCOL.md (thresholds locked
 > before any run). Raw logs: EVAL_RESULTS.md. Ledger: STATE.md. Dispatches:
@@ -6,7 +6,7 @@
 
 ## What was tested
 
-Conductor = brain/hands delegation protocol for Claude Code: the lead model
+Handoff = brain/hands delegation protocol for Claude Code: the lead model
 (Fable 5 "brain") designs, writes DISPATCH spec files, and adjudicates
 evidence; cheaper executors (Opus 4.8 subagents, codex) implement. Two
 claims: (1) token tiering shifts burn off the lead model; (2) the
@@ -39,7 +39,7 @@ artifacts.
    v2. Pair-1's FAIL direction survived correction; its magnitude shrank
    (was misreported +29%, truly +4.4%). The blind E3 judge independently
    re-discovered this exact bug in the v1 artifact — convergent validation.
-2. **System-total tokens**: conductor burns MORE total tokens (pair-2:
+2. **System-total tokens**: handoff burns MORE total tokens (pair-2:
    8,030 Fable + 35,936 Opus vs 25,612 Fable solo). The claim is lead-model
    relief + brain availability during execution, not total thrift. Blended
    $-cost breakeven ≈ Fable:Opus price ratio 2.04 (ratio not verified —
@@ -82,7 +82,7 @@ artifacts.
 
 - <200-line artifact & <500-line read: brain solo (or ≤5-line hands-on line).
 - ≥200-line artifact or ≥500-line read or brain needed in parallel:
-  dispatch per conductor protocol (Opus default, capability-first).
+  dispatch per handoff protocol (Opus default, capability-first).
 - Reviews/second opinions: read-only consultations (no DISPATCH file),
   conclusions ledgered; codex via routing.md invoke shapes VERBATIM.
 

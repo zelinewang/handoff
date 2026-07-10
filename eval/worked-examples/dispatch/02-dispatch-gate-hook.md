@@ -2,12 +2,12 @@
 
 > Status: accepted
 > Channel: agent-opus
-> Dispatched: 2026-07-09 08:54 UTC | Spec: ~/.claude/skills/conductor/SKILL.md (v2 backlog item)
-> Workspace: ~/.claude/skills/conductor/
+> Dispatched: 2026-07-09 08:54 UTC | Spec: ~/.claude/skills/handoff/SKILL.md (v2 backlog item)
+> Workspace: ~/.claude/skills/handoff/
 
 ## Context
 
-The `conductor` skill (read ~/.claude/skills/conductor/SKILL.md
+The `handoff` skill (read ~/.claude/skills/handoff/SKILL.md
 first) mandates: state-mutating dispatches require a DISPATCH file; read-only
 consultations are exempt. v1 enforces this by skill flow only. This task
 builds the v2 enforcement PROTOTYPE: a Claude Code PreToolUse hook that
@@ -31,10 +31,10 @@ Verified facts:
 
 ## Task
 
-Create `~/.claude/skills/conductor/hooks/dispatch-gate.sh` (the
-skill directory keeps conductor assets self-contained for future packaging)
+Create `~/.claude/skills/handoff/hooks/dispatch-gate.sh` (the
+skill directory keeps handoff assets self-contained for future packaging)
 plus a pure-bash test script
-`~/.claude/skills/conductor/tests/dispatch-gate.test.sh`.
+`~/.claude/skills/handoff/tests/dispatch-gate.test.sh`.
 
 Hook behavior (PreToolUse, intended matcher: Agent):
 1. Parse stdin JSON. If `tool_name` != "Agent" → exit 0 silently (defensive;
@@ -49,10 +49,10 @@ Hook behavior (PreToolUse, intended matcher: Agent):
      or any name containing `reviewer` / `explorer`
 3. Otherwise:
    - default: warn — print ONE concise stderr line reminding about the
-     conductor dispatch protocol, exit 0 (never blocks by default)
-   - `CONDUCTOR_STRICT=1` in env: exit 2 (block) with a one-line stderr
+     handoff dispatch protocol, exit 0 (never blocks by default)
+   - `HANDOFF_STRICT=1` in env: exit 2 (block) with a one-line stderr
      explaining why + how to comply (reference a dispatch file, or set the
-     read-only marker, or unset CONDUCTOR_STRICT)
+     read-only marker, or unset HANDOFF_STRICT)
 4. Malformed/empty stdin JSON → exit 0 silently (never break the tool chain
    on parser failure).
 
@@ -80,7 +80,7 @@ Header comment in the hook must include: purpose, registration snippet
       (1) prompt with dispatch/NN-x.md path → exit 0, no stderr
       (2) prompt with DISPATCH keyword → exit 0, no stderr
       (3) bare prompt, default mode → exit 0, WITH stderr warn line
-      (4) bare prompt, CONDUCTOR_STRICT=1 → exit 2, WITH stderr
+      (4) bare prompt, HANDOFF_STRICT=1 → exit 2, WITH stderr
       (5) read-only marker prompt → exit 0, no stderr
       (6) subagent_type=Explore bare prompt → exit 0, no stderr
       (7) malformed JSON stdin → exit 0, no crash
@@ -92,9 +92,9 @@ Header comment in the hook must include: purpose, registration snippet
 ## Verify (run these; paste real output)
 
 ```bash
-ls -la ~/.claude/skills/conductor/hooks/ ~/.claude/skills/conductor/tests/
-bash -n ~/.claude/skills/conductor/hooks/dispatch-gate.sh && echo SYNTAX-OK
-bash ~/.claude/skills/conductor/tests/dispatch-gate.test.sh
+ls -la ~/.claude/skills/handoff/hooks/ ~/.claude/skills/handoff/tests/
+bash -n ~/.claude/skills/handoff/hooks/dispatch-gate.sh && echo SYNTAX-OK
+bash ~/.claude/skills/handoff/tests/dispatch-gate.test.sh
 grep -c dispatch-gate ~/.claude/settings.json || echo "0 (not registered — correct)"
 ```
 
@@ -154,8 +154,8 @@ grep -c dispatch-gate ~/.claude/settings.json → 0
 
 ### 3. Files created
 
-- `~/.claude/skills/conductor/hooks/dispatch-gate.sh` — 88 lines
-- `~/.claude/skills/conductor/tests/dispatch-gate.test.sh` — 87 lines
+- `~/.claude/skills/handoff/hooks/dispatch-gate.sh` — 88 lines
+- `~/.claude/skills/handoff/tests/dispatch-gate.test.sh` — 87 lines
 
 ### 4. Deviations & discoveries
 
@@ -179,7 +179,7 @@ grep -c dispatch-gate ~/.claude/settings.json → 0
   (`review_re='^[[:space:]]*(review |adversarially verify)'`), which in bash
   anchors to the whole-string start (not per-line), matching the "starts with"
   intent precisely.
-- **Strict never overrides a PASS**: added case (11) proving CONDUCTOR_STRICT=1
+- **Strict never overrides a PASS**: added case (11) proving HANDOFF_STRICT=1
   still exits 0 when a read-only marker is present — block only fires when NO
   pass condition matched.
 

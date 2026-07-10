@@ -1,4 +1,4 @@
-# Conductor Eval Results (running log)
+# Handoff Eval Results (running log)
 
 ## MEASUREMENT ERRATUM (2026-07-09 ~19:40 UTC) — applies to ALL numbers above/below
 
@@ -29,7 +29,7 @@ Tasks per prereg (A2+B1 after disclosed A1 infeasibility switch):
 - Arm S (solo): script-c.sh --remediate/--json + 16-case hermetic
   test suite → commit <sha> (<branch-a> worktree),
   +154/-16 script + 176L test = 330 insertions, 16/16 pass, 0 rework.
-- Arm C (conductor): product-app src/lib/feature-b.ts + feature-b.test.ts →
+- Arm C (handoff): product-app src/lib/feature-b.ts + feature-b.test.ts →
   commit <sha> (<branch-b> worktree off <sha>), 219 insertions,
   full suite 235/235 (10 new feature-b cases), typecheck+lint clean, 0 rework,
   accepted first pass (dispatch/03).
@@ -55,7 +55,7 @@ pending the E3 quality floor (below). Secondary metrics same direction:
 cache_write −87.8%, brain tok/line −52.7%.
 
 System-total note (honesty): C burns MORE total tokens (8,030 Fable +
-35,936 Opus = 43,966) than S (25,612 Fable). The thesis conductor sells is
+35,936 Opus = 43,966) than S (25,612 Fable). The thesis handoff sells is
 LEAD-model relief + brain availability, not total-token thrift; blended
 $-cost verdict depends on the Fable:Opus price ratio (breakeven ≈ 2.04:1;
 ratio not verified today — recorded as formula, not claim).
@@ -79,7 +79,7 @@ direction); scout intel symmetric.
 ## Pair 1 — 2026-07-09 (session <session-id>, measured by token-report.sh **v1 — numbers superseded by the ERRATUM above; direction valid, magnitudes inflated**)
 
 Tasks (both bash-script + tests class):
-- Arm C (conductor): dispatch-gate hook prototype → hooks/dispatch-gate.sh
+- Arm C (handoff): dispatch-gate hook prototype → hooks/dispatch-gate.sh
   (88 L) + tests (87 L), 11/11 tests pass, 0 rework, dispatch/02 accepted
 - Arm S (solo): token-report.sh (~90 L), 2 self-tests pass, 0 rework
 
@@ -105,7 +105,7 @@ minus int2 [09:02:17–09:02:44] (protocol revision, 2,009 out).
   stricter size-matched pairs), not as a result.
 - **Structural finding (the real lesson): dispatch has a fixed brain cost**
   (~write dispatch ~4k + adjudication + status narration) that dominates at
-  this task scale (60–175 line artifacts). Conductor's savings thesis lives in
+  this task scale (60–175 line artifacts). Handoff's savings thesis lives in
   LARGER tasks where hands absorb read-code/trial-and-error tokens. Pair-2
   should use a bigger, code-reading-heavy task to test the thesis where it
   actually claims value.
@@ -148,7 +148,7 @@ content) — separate follow-up, NOT part of this eval task.
   Est. artifact ~180-230L. Branch <branch-a> off origin/main
   in a fresh worktree (parallel-work detection: checkout is on
   an unrelated feature branch with uncommitted changes → worktree MANDATORY).
-- **Arm C (conductor — Agent(model:"opus") implements)**: product-app
+- **Arm C (handoff — Agent(model:"opus") implements)**: product-app
   feature-b. Set-completion + cost-to-complete module + vitest per
   an internal product proposal doc (a committed feature). CREATE src/lib/feature-b.ts +
   src/lib/feature-b.test.ts. READ: collections.ts 205L + collection.ts 130L +
@@ -166,12 +166,12 @@ Interrupt/exclusion windows logged live as they occur.
 
 Metrics & thresholds: unchanged from EVAL_PROTOCOL.md E1 (primary: brain
 output tokens, PASS ≥40% drop C vs S; measured by
-~/.claude/skills/conductor/scripts/token-report.sh timestamp slicing of THIS
+~/.claude/skills/handoff/scripts/token-report.sh timestamp slicing of THIS
 session, output tokens only per pair-1 cache-confound precedent). Secondary
 recorded: tok/line, wall-clock, rework count, hand tokens.
 
 Known asymmetries disclosed at lock: (1) C-task read burden heavier (~730 vs
-~570L) — direction favors the conductor thesis; guarded by E3 quality floor
+~570L) — direction favors the handoff thesis; guarded by E3 quality floor
 + tok/line secondary. (2) Cross-language pair (bash/jq+python-toml vs
 TS/vitest) — accepted; pair-1 was same-class, crossing classes across pairs
 adds external validity. (3) Both arms start from equivalent scout intel
@@ -183,7 +183,7 @@ comparison).
 
 Subject: fresh session <session-id> (Fable 5, zero conversation history; SAME
 model class + machine as session A → no portable-bonus claim). Resumed from
-one line ("Resume from ~/conductor-eval/STATE.md"), read ledger files only,
+one line ("Resume from ~/handoff-eval/STATE.md"), read ledger files only,
 locked E2-RESPONSES.md 09:44 UTC BEFORE any other work; sealed file untouched
 pre-lock. Contamination surface self-declared in the responses header
 (a cross-session-memory startup note title leaked the Q5 headline).

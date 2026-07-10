@@ -1,7 +1,7 @@
 # E2 Blind-Relay State Quiz (answer BEFORE doing any work)
 
 Rules for the resuming session: answer from STATE.md + dispatch/* + the
-conductor skill files ONLY. Do NOT read E2-ANSWERS-SEALED.md (it exists for
+handoff skill files ONLY. Do NOT read E2-ANSWERS-SEALED.md (it exists for
 the judge). Write your answers to E2-RESPONSES.md in this directory, then
 proceed with the Next Session Entry Point work.
 

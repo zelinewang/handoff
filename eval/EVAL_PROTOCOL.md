@@ -1,13 +1,13 @@
-# Conductor Eval Protocol v1 (pre-registered 2026-07-09)
+# Handoff Eval Protocol v1 (pre-registered 2026-07-09)
 
-Purpose: falsifiably test whether conductor achieves its two goals before
+Purpose: falsifiably test whether handoff achieves its two goals before
 sharing/open-sourcing. Thresholds are PRE-REGISTERED (written before any run;
 self-serving reinterpretation after the fact is not allowed).
 
 Measurement pipeline: VERIFIED 2026-07-09 — per-model token usage parses
 cleanly from `~/.claude/projects/<proj>/<session>.jsonl` (main) +
 `<session>/subagents/agent-*.jsonl` (hands); codex self-reports total.
-Baseline sample (conductor-build session itself): brain fable-5 out=213k,
+Baseline sample (handoff-build session itself): brain fable-5 out=213k,
 hand opus-4.8 out=20.6k, codex 52k. NOT evidence either way — doc-type task,
 execution share too small. Eval MUST use code-implementation tasks.
 
@@ -15,7 +15,7 @@ execution share too small. Eval MUST use code-implementation tasks.
 
 Design: paired real backlog tasks (30–60 min scale), 2–3 pairs, arms crossed
 per pair to cancel difficulty bias (pair1: C/S, pair2: S/C, pair3 coin-flip).
-- Arm C (conductor): brain designs + dispatches + adjudicates; Agent(opus)
+- Arm C (handoff): brain designs + dispatches + adjudicates; Agent(opus)
   implements. Normal protocol, no special effort.
 - Arm S (solo): brain implements everything itself (status-quo way).
 
@@ -31,7 +31,7 @@ Pre-registered thresholds:
 ## E2 — Handoff losslessness (goal 2: spec-tracked continuity)
 
 Design: blind relay.
-1. Session A runs a conductor task to ~50% (≥1 dispatch accepted, ≥1
+1. Session A runs a handoff task to ~50% (≥1 dispatch accepted, ≥1
    pending/in-flight). A writes a SEALED ground-truth sheet (10 Q&A on goal /
    done / in-flight / blockers / next) — stored where B cannot see it.
 2. Kill session A. Fresh session B (zero history; bonus points: different
@@ -54,7 +54,7 @@ without provenance labels. Dimensions: correctness / completeness / idiom.
 
 ## Task candidates (real backlog, need user selection)
 
-1. conductor v2 hook-gate prototype (PreToolUse script; self-contained,
+1. handoff v2 hook-gate prototype (PreToolUse script; self-contained,
    testable — also produces the v2 feature)
 2. eval token-report tool itself (jq/bash script turning JSONL into the E1
    table — meta but real, immediately reusable)

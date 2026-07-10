@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # token-report.sh — per-model token usage report for a Claude Code session.
-# Part of the conductor skill: quantifies the brain-vs-hands token split that
+# Part of the handoff skill: quantifies the brain-vs-hands token split that
 # the delegation protocol exists to create.
 #
 # Usage:

@@ -4,7 +4,7 @@
 
 Initial release.
 
-- Conductor protocol v1: DISPATCH = spec = record; STATE.md ledger;
+- Handoff protocol v1: DISPATCH = spec = record; STATE.md ledger;
   flagship-floor model tiering; ceremony conditional on the measured
   ~200-line-artifact / ~500-line-read break-even.
 - Full pre-registered evaluation shipped in `eval/` (E1 scale-conditional

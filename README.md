@@ -1,12 +1,16 @@
-# Conductor
+# Handoff
 
-**A token-tiered delegation protocol for agent harnesses.** The lead model (the
+**You hand off work to hands — and any future session can pick up the handoff.**
+
+A token-tiered delegation protocol for agent harnesses. The lead model (the
 "brain") only designs, writes dispatch specs, and adjudicates evidence; cheaper
-executors (the "hands") burn the execution tokens. Every dispatch is a spec file
-on disk — the prompt you send *is* the permanent record — and a `STATE.md` ledger
-makes any run resumable by a fresh session with no transcript.
+executor models (the "hands") burn the execution tokens. Every dispatch is a
+spec file on disk — the prompt you send *is* the permanent record — and a
+`STATE.md` ledger makes any run resumable by a fresh session with no transcript.
+The name is the protocol: **hand off** execution to cheaper hands (token
+tiering), and leave a **handoff** any session can resume (lossless continuity).
 
-Conductor is a **usage protocol over mechanisms your harness already has**
+Handoff is a **usage protocol over mechanisms your harness already has**
 (subagent spawn + a per-spawn model override), not a framework you install and
 import. It ships with the full pre-registered evaluation that produced its
 design — including the experiment where dispatch *lost*. Read section 3 before
@@ -35,7 +39,7 @@ Two failure modes show up the moment you use subagents for real work:
   it up without you re-explaining everything. There is no ledger, so there is no
   handoff.
 
-## 2. What conductor is
+## 2. What handoff is
 
 One protocol, three guarantees:
 
@@ -56,13 +60,18 @@ One protocol, three guarantees:
    far more than the per-token price delta. The model parameter is **required**
    on every spawn.
 
+> **Not** the OpenAI Agents SDK's *handoffs* (peer-to-peer control transfer
+> between agents). Here, handoff means two specific things: offloading
+> execution DOWN a model tier, and passing work FORWARD across sessions via
+> the ledger.
+
 And one discipline that keeps it from becoming ceremony theater:
 
 - **Ceremony only above the measured break-even.** The full DISPATCH-file
   protocol is worth its fixed cost only when the task is big enough
   (~≥200-line artifact **or** ~≥500-line code-read), must survive a session
   handoff, or runs parallel hands. Below that, a plain inline spawn (still with
-  an explicit model) is cheaper, and the git commit is the audit trail. Conductor
+  an explicit model) is cheaper, and the git commit is the audit trail. Handoff
   is a ceremony you *enter when scale warrants* — see the evidence for exactly
   where that line sits.
 
@@ -72,7 +81,7 @@ and, for high-risk diffs, dispatches a read-only reviewer over the full change.
 
 ## 3. Evidence
 
-Conductor was **pre-registered** and evaluated before this repo existed. Thresholds
+Handoff was **pre-registered** and evaluated before this repo existed. Thresholds
 were locked in `eval/EVAL_PROTOCOL.md` *before any run*, so post-hoc
 reinterpretation isn't possible. The full protocol, running log, and report are in
 [`eval/`](eval/); two real dispatches are in
@@ -95,10 +104,10 @@ solo. Above it, dispatch.
 ### Honesty notes (read before quoting any number)
 
 - **Total tokens go UP, by design.** The large-task run burned ~44k total tokens
-  (8,030 lead-model + ~36k hand) versus ~25.6k for the solo baseline. Conductor's
+  (8,030 lead-model + ~36k hand) versus ~25.6k for the solo baseline. Handoff's
   claim is **lead-model offload + brain availability during execution**, *not*
   total-token thrift. If your cost model is dominated by total tokens rather than
-  by which model burns them, conductor is the wrong tool (see section 4). The
+  by which model burns them, handoff is the wrong tool (see section 4). The
   blended-dollar verdict depends on your lead:hand price ratio — we recorded the
   break-even formula but make no dollar claim.
 
@@ -120,7 +129,7 @@ solo. Above it, dispatch.
   independently re-discovered the exact same counting bug in the artifact under
   review. Convergent validation: two independent paths found the same defect.
 
-## 4. When NOT to use conductor
+## 4. When NOT to use handoff
 
 - **Small tasks below the break-even.** A <200-line artifact that needs <500
   lines of reading is cheaper done solo (or with a ≤5-line direct edit). The
@@ -131,7 +140,7 @@ solo. Above it, dispatch.
 - **Single-session throwaway work.** If nothing needs to survive the session and
   there's no handoff, the ledger earns nothing. Skip the ceremony.
 
-- **Total-token-budget-sensitive users.** Conductor deliberately spends *more*
+- **Total-token-budget-sensitive users.** Handoff deliberately spends *more*
   total tokens to move burn off the lead model. If your constraint is total
   tokens (not lead-model tokens or wall-clock parallelism), this trade goes the
   wrong way for you.
@@ -141,17 +150,17 @@ solo. Above it, dispatch.
 **Claude Code:**
 
 ```bash
-git clone <this-repo> conductor && cd conductor
+git clone <this-repo> handoff && cd handoff
 bash install.sh
 ```
 
-`install.sh` copies `skill/` into `~/.claude/skills/conductor/` (backing up any
+`install.sh` copies `skill/` into `~/.claude/skills/handoff/` (backing up any
 existing copy first) and prints two snippets for you to paste into your own
 `CLAUDE.md` — a trigger row and a model-tiering section. It **never** edits your
 `settings.json`; you stay in control of what your harness auto-loads. Re-running
 it is safe (idempotent, with a timestamped backup each time).
 
-**Any other harness:** conductor needs only two primitives — the ability to spawn
+**Any other harness:** handoff needs only two primitives — the ability to spawn
 a subagent, and a per-spawn model override. See [`docs/porting.md`](docs/porting.md)
 for how to map the four dispatch channels, the DISPATCH/STATE files, and the
 model-tiering rule onto a non-Claude-Code harness.
@@ -162,10 +171,10 @@ model-tiering rule onto a non-Claude-Code harness.
 README.md          this file
 LICENSE            MIT
 install.sh         Claude Code installer (prints CLAUDE.md snippets; no settings.json edits)
-skill/             the conductor skill (SKILL.md, templates/, references/, scripts/, hooks/, tests/)
+skill/             the handoff skill (SKILL.md, templates/, references/, scripts/, hooks/, tests/)
 eval/              the full pre-registered evaluation (protocol, report, running log, E2 relay files)
   worked-examples/ two real dispatch files, sanitized, as concrete samples
-docs/porting.md    adapting conductor to non-Claude-Code harnesses
+docs/porting.md    adapting handoff to non-Claude-Code harnesses
 ```
 
 ---

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════
-# dispatch-gate.sh — PreToolUse:Agent hook (conductor v2 prototype)
+# dispatch-gate.sh — PreToolUse:Agent hook (handoff v2 prototype)
 #
 # Purpose: nudge (default) or block (strict) `Agent` tool dispatches
 # that mutate state without referencing a DISPATCH spec file. The
-# conductor protocol (see ../SKILL.md) requires every state-mutating
+# handoff protocol (see ../SKILL.md) requires every state-mutating
 # dispatch to be a file on disk; read-only consultations are exempt.
 # v1 enforces this by skill flow only — this hook is the v2 automated
 # enforcement layer.
@@ -15,7 +15,7 @@
 #       "PreToolUse": [
 #         { "matcher": "Agent",
 #           "hooks": [ { "type": "command",
-#             "command": "$HOME/.claude/skills/conductor/hooks/dispatch-gate.sh" } ] }
+#             "command": "$HOME/.claude/skills/handoff/hooks/dispatch-gate.sh" } ] }
 #       ]
 #     }
 #   }
@@ -26,7 +26,7 @@
 #
 # Modes:
 #   default            → non-matching dispatch prints ONE stderr nudge, exit 0
-#   CONDUCTOR_STRICT=1 → non-matching dispatch exit 2 (Claude Code blocks call)
+#   HANDOFF_STRICT=1 → non-matching dispatch exit 2 (Claude Code blocks call)
 #
 # Input: JSON on stdin from Claude Code PreToolUse hook, e.g.
 #   {"tool_name":"Agent","tool_input":{"prompt":"...","subagent_type":"..."}}
@@ -79,10 +79,10 @@ fi
 shopt -u nocasematch
 
 # ── No PASS matched → nudge (default) or block (strict) ──────────────
-if [[ "${CONDUCTOR_STRICT:-0}" == "1" ]]; then
-    echo "[dispatch-gate] BLOCKED (CONDUCTOR_STRICT=1): Agent dispatch has no dispatch/NN-name.md reference and no read-only marker — reference a DISPATCH file, add a READ-ONLY marker for consultations, or unset CONDUCTOR_STRICT (conductor SKILL.md)." >&2
+if [[ "${HANDOFF_STRICT:-0}" == "1" ]]; then
+    echo "[dispatch-gate] BLOCKED (HANDOFF_STRICT=1): Agent dispatch has no dispatch/NN-name.md reference and no read-only marker — reference a DISPATCH file, add a READ-ONLY marker for consultations, or unset HANDOFF_STRICT (handoff SKILL.md)." >&2
     exit 2
 fi
 
-echo "[dispatch-gate] reminder: state-mutating Agent dispatches should reference a dispatch/NN-name.md spec file (conductor protocol); mark read-only consults READ-ONLY. Nudge only — set CONDUCTOR_STRICT=1 to enforce." >&2
+echo "[dispatch-gate] reminder: state-mutating Agent dispatches should reference a dispatch/NN-name.md spec file (handoff protocol); mark read-only consults READ-ONLY. Nudge only — set HANDOFF_STRICT=1 to enforce." >&2
 exit 0

@@ -2,20 +2,20 @@
 
 > Status: accepted
 > Channel: agent-opus
-> Dispatched: 2026-07-09 | Spec: ~/.claude/skills/conductor/SKILL.md
-> Workspace: ~/.claude/skills/conductor/
+> Dispatched: 2026-07-09 | Spec: ~/.claude/skills/handoff/SKILL.md
+> Workspace: ~/.claude/skills/handoff/
 
 ## Context
 
-A new Claude Code skill `conductor` was just created at
-`~/.claude/skills/conductor/`. It defines a brain/hands delegation
+A new Claude Code skill `handoff` was just created at
+`~/.claude/skills/handoff/`. It defines a brain/hands delegation
 protocol: the lead model designs and writes DISPATCH spec files; cheaper
 executors implement. Read these files first — they are the authoritative spec:
 
-- `~/.claude/skills/conductor/SKILL.md` (the protocol; its Routing
+- `~/.claude/skills/handoff/SKILL.md` (the protocol; its Routing
   Tree section references `references/routing.md` — the file YOU are creating)
-- `~/.claude/skills/conductor/templates/DISPATCH.md`
-- `~/.claude/skills/conductor/templates/STATE.md`
+- `~/.claude/skills/handoff/templates/DISPATCH.md`
+- `~/.claude/skills/handoff/templates/STATE.md`
 
 Verified facts you must build on (already checked by the brain):
 
@@ -42,7 +42,7 @@ Verified facts you must build on (already checked by the brain):
 
 ## Task
 
-Write `~/.claude/skills/conductor/references/routing.md` — the
+Write `~/.claude/skills/handoff/references/routing.md` — the
 channel operations manual referenced by SKILL.md. For EACH channel
 (A: Agent(opus) subagent, B: codex exec, C: async agent queue, D: third-party via
 claude -p), document exactly four aspects:
@@ -87,9 +87,9 @@ the queue's task output).
 ## Verify (run these; paste real output)
 
 ```bash
-ls -la ~/.claude/skills/conductor/references/
-wc -l ~/.claude/skills/conductor/references/routing.md
-grep -c "^## " ~/.claude/skills/conductor/references/routing.md
+ls -la ~/.claude/skills/handoff/references/
+wc -l ~/.claude/skills/handoff/references/routing.md
+grep -c "^## " ~/.claude/skills/handoff/references/routing.md
 codex exec --help | grep -iE "sandbox|approval|full-auto" | head -10
 ```
 

@@ -1,10 +1,10 @@
-# STATE: conductor-skill-v1
+# STATE: handoff-skill-v1
 
 > Updated: 2026-07-09 ~13:40 UTC by fable-session-<session-id> | Phase: post-eval batch wave 04/05/06 in flight
 
 ## Goal
 
-Validate conductor (brain/hands delegation skill: token tiering + spec-tracked
+Validate handoff (brain/hands delegation skill: token tiering + spec-tracked
 lossless handoff) via the pre-registered eval (EVAL_PROTOCOL.md), then package
 it portable for team sharing; repo stays PRIVATE-first, public flip is a
 user-only decision after eval passes.
@@ -15,14 +15,14 @@ user-only decision after eval passes.
 parallel): 04 drift E3 defect fixes (hand-drift, worktree
 repo-A-drift-remediate) · 05 adjudicate.sh helper
 (hand-adjudicate, skill scripts/) · 06 portable repo content build
-(hand-repo, ~/conductor-repo/, sanitization = hard gate). User gave repo
+(hand-repo, ~/handoff-repo/, sanitization = hard gate). User gave repo
 go-ahead 2026-07-09 (build PRIVATE; public flip stays user-only). Brain will:
 adjudicate as evidence returns → re-rsync skill/ into repo → gh repo create
 --private + push → README final pass. /sync apply still pending (user).
 
 ## Done
 
-- [x] conductor skill v1 shipped: SKILL.md + templates/{DISPATCH,STATE}.md +
+- [x] handoff skill v1 shipped: SKILL.md + templates/{DISPATCH,STATE}.md +
       references/routing.md + CLAUDE.md trigger row + async-queue channel ref
 - [x] codex heterogeneous review: 10 findings triaged, 9 accepted + 1 partial,
       all fixes applied (critical: evidence must persist into dispatch file)
@@ -61,7 +61,7 @@ adjudicate as evidence returns → re-rsync skill/ into repo → gh repo create
 - [ ] product-app product decision (user): feature-b's denominator definition
       (one-line filter, see dispatch/03 adjudication) — before
       any <branch-b> PR
-- [ ] User: /sync apply (still pending for ~/.claude conductor changes,
+- [ ] User: /sync apply (still pending for ~/.claude handoff changes,
       now incl. routing.md economics + failure modes, STATE template,
       token-report v2)
 
@@ -118,7 +118,7 @@ none
   Side observation (separate follow-up, not this eval): repo-A
   main is behind the live system; three stale PRs hold deployed content
 - 2026-07-09 (build session, post-eval) — Model tiering DECOUPLED from
-  conductor into CLAUDE.md §Agent Spawn Model Tiering (unconditional, all
+  handoff into CLAUDE.md §Agent Spawn Model Tiering (unconditional, all
   spawn channels; Workflow agent() default inherits Fable = trap; fork always
   Fable). Ceremony CONDITIONALIZED: full DISPATCH protocol only at ≥200L
   artifact / ≥500L read / handoff-bound / multi-dispatch / parallel mutation;
@@ -137,12 +137,12 @@ none
 
 First: read EVAL_REPORT.md (canonical verdict) + confirm with the user the
 portable-repo build go-ahead and its sequencing vs the pending /sync apply
-(repo packaging duplicates ~/.claude/skills/conductor content — sync first
+(repo packaging duplicates ~/.claude/skills/handoff content — sync first
 avoids divergence).
 Then: build the portable PRIVATE repo (skill/ install.sh docs/ examples/
 eval/ with EVAL_REPORT.md + EVAL_RESULTS.md + dispatches as evidence), run
 a pre-publication content sweep, and hand the public-flip decision to the user. Also on
 deck: E3 follow-up fixes on <branch-a> (see Todo).
-Directory: ~/conductor-eval/. Cross-session memory: durable lessons saved to
+Directory: ~/handoff-eval/. Cross-session memory: durable lessons saved to
 the cross-session memory system (skill notes, codex gotchas, transcript usage
 row shapes).

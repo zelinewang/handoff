@@ -1,6 +1,6 @@
 # E2 SEALED ANSWERS — judge only. Resuming session must NOT read this file.
 
-1. Validate (via pre-registered eval) and then package the conductor
+1. Validate (via pre-registered eval) and then package the handoff
    brain/hands delegation skill for team sharing / possible open-sourcing —
    proving token tiering + lossless spec-tracked handoff.
 2. dispatch/01 (references/routing.md, 152-line channel ops manual, accepted)

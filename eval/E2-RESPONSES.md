@@ -6,7 +6,7 @@
 > Model: Fable 5 (claude-fable-5) — SAME model class and SAME machine as
 > session A, so no "portable bonus" claim is available for this run.
 > Sources used: STATE.md, dispatch/01, dispatch/02, EVAL_PROTOCOL.md,
-> EVAL_RESULTS.md, conductor SKILL.md (loaded via Skill tool).
+> EVAL_RESULTS.md, handoff SKILL.md (loaded via Skill tool).
 > E2-ANSWERS-SEALED.md NOT read. eval-timestamps.txt NOT read (seen in `ls`
 > only; not on the entry-point reading list).
 
@@ -15,11 +15,11 @@
 Answered before consulting the sealed sheet, but this machine auto-loads
 memory at session start. What leaked into my context BEFORE answering:
 
-1. the cross-session memory system's session-start hook surfaced a note title: "conductor eval
+1. the cross-session memory system's session-start hook surfaced a note title: "handoff eval
    pair-1: naive E1 FAIL-direction + fixed-dispatch-cost lesson; E2 blind
-   relay armed at ~/conductor-eval" — overlaps the HEADLINE of Q5. All
+   relay armed at ~/handoff-eval" — overlaps the HEADLINE of Q5. All
    numbers/details in my Q5 answer are file-derived.
-2. Auto-memory MEMORY.md index line for "conductor skill v1" — mentions
+2. Auto-memory MEMORY.md index line for "handoff skill v1" — mentions
    "/sync apply 待跑" and "v2: hook闸" — overlaps fragments of Q4/Todo.
 3. Previous-session summary auto-loaded in context covers the project-x
    work only (different project); inspected, no E2-relevant content.
@@ -31,7 +31,7 @@ declared above. The judge may discount Q5/Q4 accordingly.
 
 ## Q1 — End goal of this workspace (one sentence)
 
-Validate the conductor skill (brain/hands token tiering + spec-tracked
+Validate the handoff skill (brain/hands token tiering + spec-tracked
 lossless handoff) against the pre-registered eval protocol (E1/E2/E3 in
 EVAL_PROTOCOL.md), then package it as a portable PRIVATE-first repo for team
 sharing — where any public flip is a user-only decision made after the eval
@@ -42,15 +42,15 @@ passes. [STATE.md Goal]
 Both dispatches are accepted; nothing is pending/in-flight.
 
 - **dispatch/01-routing-reference** → produced
-  `~/.claude/skills/conductor/references/routing.md` (152 lines, 5 `##`
+  `~/.claude/skills/handoff/references/routing.md` (152 lines, 5 `##`
   sections): the channel operations manual for channels A (Agent-opus),
   B (codex exec), C (async agent queue, pointer-style to an internal tool's manual),
   D (third-party via `claude -p`, flagged UNVERIFIED), each with
   When / Invoke / Steer / Cost & limits + evidence-return notes. All codex
   flags verified against the live binary.
 - **dispatch/02-dispatch-gate-hook** → produced
-  `~/.claude/skills/conductor/hooks/dispatch-gate.sh` (88 lines) +
-  `~/.claude/skills/conductor/tests/dispatch-gate.test.sh` (87 lines) —
+  `~/.claude/skills/handoff/hooks/dispatch-gate.sh` (88 lines) +
+  `~/.claude/skills/handoff/tests/dispatch-gate.test.sh` (87 lines) —
   the v2 enforcement PROTOTYPE PreToolUse hook. 11/11 tests pass.
 
 ## Q3 — What dispatch/02 produced + test result
@@ -61,7 +61,7 @@ tool calls: it PASSES silently when the prompt references a dispatch file
 (READ-ONLY marker / review-semantics prefix), or targets a read-only
 subagent type (Explore/Plan/*reviewer*/*explorer*); otherwise it WARNS on
 stderr by default (exit 0, never blocks) or BLOCKS (exit 2) under
-`CONDUCTOR_STRICT=1`. Malformed stdin JSON → exit 0 silently. Plus a
+`HANDOFF_STRICT=1`. Malformed stdin JSON → exit 0 silently. Plus a
 pure-bash test script.
 
 Test result: **11/11 PASS** on real execution (the 7 mandated cases —
@@ -93,7 +93,7 @@ explicitly NOT usable as a PASS under pre-registration.
 
 **Structural lesson:** dispatch carries a FIXED brain cost (~4k to write the
 DISPATCH + adjudication + status narration) that dominates at pair-1's task
-scale (60–175 line artifacts). Conductor's savings thesis lives in LARGER
+scale (60–175 line artifacts). Handoff's savings thesis lives in LARGER
 code-reading-heavy tasks where hands absorb the read-code/trial-and-error
 tokens — so pair-2 must be a bigger, code-reading-heavy pair. Unpriced
 benefits observed alongside: the brain stayed free during hand execution
@@ -128,7 +128,7 @@ silently inherits the lead model Fable = zero saving), and never use fork
 ## Q8 — Current blockers
 
 **None** (STATE.md Blockers/Problems: none). The only standing user-owned
-item is `/sync apply` for the ~/.claude conductor changes — a Todo entry,
+item is `/sync apply` for the ~/.claude handoff changes — a Todo entry,
 not a blocker for eval work.
 
 ## Q9 — The TWO next work items (per Todo / Entry Point)

@@ -1,6 +1,6 @@
-# Porting conductor to another harness
+# Porting handoff to another harness
 
-Conductor is a **protocol**, not a binary. Most of it — the DISPATCH file, the
+Handoff is a **protocol**, not a binary. Most of it — the DISPATCH file, the
 `STATE.md` ledger, the model-tiering discipline, the adjudicate-on-evidence rule
 — is plain Markdown and habit, so it moves to any harness unchanged. Only the
 *channel mechanics* are Claude-Code-specific. This doc maps them.

@@ -1,9 +1,9 @@
 ---
-name: conductor
+name: handoff
 description: Token-tiered delegation protocol — the lead model (the "brain") designs, writes dispatch specs, and adjudicates evidence; cheaper executors (subagents on a strong non-lead model, an external CLI agent, an async agent queue) burn the execution tokens. Every dispatch is a spec file on disk (DISPATCH = prompt = record) plus a STATE ledger, so any session can hand off or resume losslessly. Use when delegating implementation to subagents/CLI-agents/an async queue, when saving lead-model tokens, when work must survive session handoff, or as the execution layer for /dev P7 on STANDARD+ tasks.
 ---
 
-# Conductor — Brain/Hands Delegation with Spec-Tracked Dispatch
+# Handoff — Brain/Hands Delegation with Spec-Tracked Dispatch
 
 One protocol, three guarantees:
 
@@ -31,7 +31,7 @@ multi-dispatch project (a STATE.md exists); parallel hands mutating files.
 Below ALL of those, tactical spawns — including small state-mutating ones —
 may use inline prompts: the native Agent tool stays fast and free-form, and
 the audit trail is the git commit itself. Model Tiering (CLAUDE.md §Agent
-Spawn Model Tiering) is UNCONDITIONAL either way: conductor is a ceremony
+Spawn Model Tiering) is UNCONDITIONAL either way: handoff is a ceremony
 you enter when scale warrants; non-Fable spawning is a rule you never exit.
 
 **Estimating scale** (30 seconds, before choosing): artifact lines ≈ files
@@ -188,9 +188,9 @@ Goal / Now / Done / Todo / Blockers / Decisions / Next Session Entry Point.
 
 When running inside `/dev` (STANDARD/DEEP): each P5 plan task maps to one
 DISPATCH file; P7 EXECUTE routes through this tree instead of the brain
-implementing; P8 verify-dev.sh and the 7 Rules stay authoritative. Conductor
+implementing; P8 verify-dev.sh and the 7 Rules stay authoritative. Handoff
 replaces WHO executes, never WHICH gates apply. QUICK-tier /dev tasks skip
-conductor (they are near the trivial line by definition).
+handoff (they are near the trivial line by definition).
 
 ## Anti-Patterns
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # adjudicate.sh — mechanize the brain's adjudication of a returned dispatch.
-# Part of the conductor skill: re-runs the dispatch's own Verify block and
+# Part of the handoff skill: re-runs the dispatch's own Verify block and
 # emits an ADJUDICATION PACKET (per-command PASS/FAIL + git summary) so the
 # brain can accept/rework from evidence without re-reading the implementation.
 #
