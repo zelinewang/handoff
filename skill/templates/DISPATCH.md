@@ -40,6 +40,12 @@ write "and also…", split into another dispatch.>
 
 ## Verify (run these; paste real output)
 
+<!-- LITERAL, runnable commands ONLY — no <placeholders>. This block is
+     machine-executed by scripts/adjudicate.sh at adjudication; a placeholder
+     breaks tooling. If the exact command must be discovered by the hand,
+     write a discovery command here (e.g. `ls tests/`) and require the final
+     command in Returned Evidence. -->
+
 ```bash
 <exact commands the hand must run — test suite, build, lint, live probe>
 ```
