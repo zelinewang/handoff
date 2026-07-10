@@ -1,0 +1,10 @@
+2026-07-09T08:53:52Z
+^ T0: pair-1 arm-C window opens (dispatch writing starts)
+2026-07-09T09:00:20Z
+^ T1: arm-C window closes (accepted), arm-S window opens
+2026-07-09T09:02:17Z
+^ T-int2-start: mid-turn protocol revision (capability-first), EXCLUDE from arm-S; also EXCLUDE interrupt-1 (model verification + routing tree edit, ~08:56-09:00 inside arm-C, locate via transcript timestamps)
+2026-07-09T09:02:44Z
+^ T-int2-end: protocol revision done, arm-S resumes
+2026-07-09T09:03:23Z
+^ T2: arm-S window closes (tool built + self-tested)
