@@ -89,10 +89,10 @@ artifacts.
 ## Eval artifacts inventory
 
 - dispatch/01 (routing.md), 02 (dispatch-gate hook, 11/11), 03 (product-app
-  binder, 235/235) — all accepted, evidence persisted in-file.
-- Arm branches: `feat/codex-drift-remediate` (repo-A worktree,
-  commit bdb8b21, 16/16 hermetic tests), `feat/binder` (product-app worktree,
-  commit 4fbe22b). Both unpushed; E3 follow-up fixes pending on the drift
-  branch (quoting/sed-escape/split-validation).
+  feature-b, 235/235) — all accepted, evidence persisted in-file.
+- Arm branches: `<branch-a>` (repo-A worktree,
+  commit <sha>, 16/16 hermetic tests), `<branch-b>` (product-app worktree,
+  commit <sha>). Both unpushed; E3 follow-up fixes pending on the
+  maintenance-tool branch (quoting/sed-escape/split-validation).
 - E2-QUESTIONS/RESPONSES/ANSWERS-SEALED, E3 verdicts (scratchpad e3-blind/,
   perishable), token windows in EVAL_RESULTS.md.

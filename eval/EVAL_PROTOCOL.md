@@ -73,5 +73,5 @@ without provenance labels. Dimensions: correctness / completeness / idiom.
 ## Sequencing
 
 E-phase (this) → revise protocol per findings → THEN portable repo
-(private-first, pre-public-sweep, user-only public flip). Eval artifacts +
+(private-first, a pre-publication content sweep, user-only public flip). Eval artifacts +
 report ship inside the repo's eval/ directory as evidence.

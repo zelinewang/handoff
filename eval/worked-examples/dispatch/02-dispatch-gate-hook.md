@@ -20,8 +20,8 @@ Verified facts:
   parameters object). For the `Agent` tool, `tool_input.prompt` is the
   dispatched prompt text and `tool_input.subagent_type` names the agent type.
   CONFIRM this shape by reading an existing working hook on this machine,
-  e.g. ~/.claude/hooks/pre-contribute-gate.sh (registered under
-  PreToolUse matcher=Bash in ~/.claude/settings.json) — copy its stdin-parsing
+  e.g. an existing PreToolUse hook from the personal config (registered under
+  a Bash matcher in ~/.claude/settings.json) — copy its stdin-parsing
   idiom rather than inventing one.
 - Hook exit codes: 0 = allow (stderr shown as info), 2 = block the tool call.
 - Hook path rules: registered commands must use absolute or $HOME paths
@@ -159,8 +159,8 @@ grep -c dispatch-gate ~/.claude/settings.json → 0
 
 ### 4. Deviations & discoveries
 
-- **Confirmed stdin JSON shape**: `pre-contribute-gate.sh` (header lines 31-33
-  + extraction line 53) confirms `tool_input` is the tool's params object,
+- **Confirmed stdin JSON shape**: an existing PreToolUse hook from the personal
+  config (its header lines 31-33 + extraction line 53) confirms `tool_input` is the tool's params object,
   read via `input="$(cat)"` then `jq -r '.tool_input.<field> // "" ' 2>/dev/null`,
   allowing on empty/parse failure. Top-level `tool_name` distinguishes tools.
   For `Agent`, the params `prompt` and `subagent_type` are the Agent tool's own

@@ -26,12 +26,12 @@ solo cost. Original v1 section preserved below for the record.
 ## Pair 2 — RESULTS (2026-07-09, session <session-id>, token-report v2)
 
 Tasks per prereg (A2+B1 after disclosed A1 infeasibility switch):
-- Arm S (solo): codex-drift-check.sh --remediate/--json + 16-case hermetic
-  test suite → commit bdb8b21 (feat/codex-drift-remediate worktree),
+- Arm S (solo): script-c.sh --remediate/--json + 16-case hermetic
+  test suite → commit <sha> (<branch-a> worktree),
   +154/-16 script + 176L test = 330 insertions, 16/16 pass, 0 rework.
-- Arm C (conductor): product-app src/lib/binder.ts + binder.test.ts →
-  commit 4fbe22b (feat/binder worktree off 5993d50), 219 insertions,
-  full suite 235/235 (10 new binder cases), typecheck+lint clean, 0 rework,
+- Arm C (conductor): product-app src/lib/feature-b.ts + feature-b.test.ts →
+  commit <sha> (<branch-b> worktree off <sha>), 219 insertions,
+  full suite 235/235 (10 new feature-b cases), typecheck+lint clean, 0 rework,
   accepted first pass (dispatch/03).
 
 Windows (UTC): T0 19:08:48 → T1 19:15:02 (S, no interrupts) → T2 19:29:21
@@ -125,37 +125,36 @@ pair 2 (codex read-only, provenance-stripped).
 User selected pairing A1+B1 (AskUserQuestion, 3 pairings + defer offered).
 **Verified-infeasibility switch A1→A2, disclosed here at lock time**: live
 verification against origin/main showed A1's surface is NOT on the base —
-`global/scripts/sync-secret-scan.sh` and `global/scripts/pre-public-sweep.sh`
-exist only in unmerged branches (PR #25, 2026-05-01) + deployed ~/.claude
+`global/scripts/script-a.sh` and `global/scripts/script-b.sh`
+exist only in unmerged branches (PR <n>, 2026-05-01) + deployed ~/.claude
 copies. The scout's "repo refactor" premise read live/disk copies, not the
 main baseline. A2+B1 was the disclosed runner-up in the same user question
 (described as tightest artifact match); switched autonomously per
 cheapest-reversible heuristic. Side observation ledgered: repo-A
-main is BEHIND the live system (stale open PRs #25/#31/#32 hold deployed
+main is BEHIND the live system (three stale open PRs hold deployed
 content) — separate follow-up, NOT part of this eval task.
 
-- **Arm S (solo — brain implements, status-quo way)**: codex-drift-remediate
-  in ~/repo-A. Add `--remediate` (dry-run: exact copy commands to
+- **Arm S (solo — brain implements, status-quo way)**: maintenance-tool
+  remediate task in ~/repo-A. Add `--remediate` (dry-run: exact copy commands to
   fix each drifted file, respecting LOCAL_STATE_ALLOWLIST semantics) +
-  `--json` (machine-readable report) to `global/scripts/codex-drift-check.sh`
+  `--json` (machine-readable report) to `global/scripts/script-c.sh`
   (240L on main, currently zero flag parsing); create
-  `global/scripts/test-codex-drift.sh` (hermetic temp-dir fixture: fabricate
+  `global/scripts/test-script-c.sh` (hermetic temp-dir fixture: fabricate
   repo SSOT + drifted ~/.codex, assert exit codes + remediation output; may
   add env-var path overrides to the script as a sub-task). Must NOT break the
-  no-arg stderr contract that auto-sync.sh L105-123 and /sync status grep.
-  READ baseline: codex-drift-check.sh 240L + setup-codex-config.sh 307L +
-  auto-sync.sh caller region (~570L total, verified on origin/main).
-  Est. artifact ~180-230L. Branch feat/codex-drift-remediate off origin/main
+  no-arg stderr contract that script-e.sh L105-123 and /sync status grep.
+  READ baseline: script-c.sh 240L + script-d.sh 307L +
+  script-e.sh caller region (~570L total, verified on origin/main).
+  Est. artifact ~180-230L. Branch <branch-a> off origin/main
   in a fresh worktree (parallel-work detection: checkout is on
-  feat/obsidian-skill with uncommitted changes → worktree MANDATORY).
+  an unrelated feature branch with uncommitted changes → worktree MANDATORY).
 - **Arm C (conductor — Agent(model:"opus") implements)**: product-app
-  binder.ts. Set-completion + cost-to-complete module + vitest per
-  docs/reports/2026-07-06-round12-remodel-proposal.md:106 (committed round-12
-  feature; brand copy already promises it). CREATE src/lib/binder.ts +
-  src/lib/binder.test.ts. READ: collections.ts 205L + collection.ts 130L +
+  feature-b. Set-completion + cost-to-complete module + vitest per
+  an internal product proposal doc (a committed feature). CREATE src/lib/feature-b.ts +
+  src/lib/feature-b.test.ts. READ: collections.ts 205L + collection.ts 130L +
   sets.ts 86L + types.ts 183L + catalog.ts 30L + stats.ts 100L (~730L/6
-  files). Est. artifact ~180-230L. Worktree branch feat/binder off HEAD
-  5993d50 (verified); the 27 dirty in-flight UI files stay untouched.
+  files). Est. artifact ~180-230L. Worktree branch <branch-b> off HEAD
+  <sha> (verified); the dirty in-flight UI files stay untouched.
   Full protocol: DISPATCH file dispatch/03, evidence persisted, adjudication
   with independent verify re-run.
 
@@ -224,7 +223,7 @@ codex (gpt-5.5, read-only) on correctness/completeness/idiom. First judge
 (both pairs, xhigh) stalled ~16 min → stale-hands kill; re-dispatched as
 two narrower per-pair judges at high effort (both returned in ~5 min).
 
-| dimension | p1 S (tokenreport) | p1 C (hookgate) | p2 S (drift) | p2 C (binder) |
+| dimension | p1 S (tokenreport) | p1 C (hookgate) | p2 S (maint-tool) | p2 C (feature-b) |
 |---|---|---|---|---|
 | correctness | C | B | B | A |
 | completeness | B | B | A- | A- |

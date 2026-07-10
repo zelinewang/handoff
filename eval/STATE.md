@@ -53,14 +53,14 @@ adjudicate as evidence returns → re-rsync skill/ into repo → gh repo create
 - [x] Eval report written → EVAL_REPORT.md (verdict: revised-protocol PASS;
       honesty notes: measurement erratum, system-total cost, small n)
 - [ ] Build portable private repo (skill/ install.sh docs/ examples/ eval/),
-      run pre-public-sweep, hand public-flip decision to user — cleared to
+      run a pre-publication content sweep, hand public-flip decision to user — cleared to
       start per PASS, held for user go-ahead (sequencing vs /sync apply)
-- [ ] E3 follow-up fixes on feat/codex-drift-remediate (blind-judge finds:
+- [ ] E3 follow-up fixes on <branch-a> (blind-judge finds:
       single-quote escaping in emitted commands, sed replacement-metachar
       escaping for $HOME, --json split validation) — post-eval, unpushed
-- [ ] product-app product decision (user): binder denominator singles-only vs
-      incl. sealed (one-line filter, see dispatch/03 adjudication) — before
-      any feat/binder PR
+- [ ] product-app product decision (user): feature-b's denominator definition
+      (one-line filter, see dispatch/03 adjudication) — before
+      any <branch-b> PR
 - [ ] User: /sync apply (still pending for ~/.claude conductor changes,
       now incl. routing.md economics + failure modes, STATE template,
       token-report v2)
@@ -98,26 +98,25 @@ none
   conclusions ledgered per protocol): S-arm (repo-A) →
   (A1) secret-scan-unify: merge 4 divergent secret-regex sets into sourced
   lib + tests; read ~460L/4 files, artifact ~200-240L; real coverage gaps
-  verified; lowest blast radius. (A2) codex-drift-remediate: --remediate/
-  --json for codex-drift-check.sh; read ~550L, artifact ~180-230L; additive.
+  verified; lowest blast radius. (A2) maintenance-tool remediate task: --remediate/
+  --json for script-c.sh; read ~550L, artifact ~180-230L; additive.
   (A3) sync-scan-lib: fix hooks' symlink+repo-only scan blindness; highest
-  value BUT touches 2 of 3 self-heal files — branch-only safe. C-arm →
-  (B1) product-app binder.ts: set-completion + cost-to-complete lib+vitest;
-  read ~730L/6 files, artifact ~180-230L; committed round-12 feature,
-  conflict-free off HEAD 5993d50 (27 dirty UI files must stay unstaged).
-  (B2) product-app-2 deps.py: multi-node invalidation closure + waive-ledger
-  integrity (catches real dead key cp2->cp5); read ~500L, artifact
-  ~150-200L; pytest stdlib. (B3) product-app stats.ts condition ladder:
-  smaller (~120-170L), display consumers dirty — weakest fit.
-  Rejected: product-app cron (user-blocked OAuth), product-app-2 platform-buglist
-  (targets other repos)
+  value BUT touches certain self-updating config files — branch-only safe. C-arm →
+  (B1) product-app feature-b: set-completion + cost-to-complete lib+vitest;
+  read ~730L/6 files, artifact ~180-230L; committed feature (internal proposal),
+  conflict-free off HEAD <sha> (dirty in-flight UI files must stay unstaged).
+  (B2) product-app-2: a dependency-graph module (invalidation-closure task);
+  read ~500L, artifact ~150-200L; pytest stdlib. (B3) product-app stats.ts
+  condition ladder: smaller (~120-170L), display consumers dirty — weakest fit.
+  Rejected: a product-app scheduled-task candidate (user-blocked), a product-app-2
+  candidate targeting other repos
 - 2026-07-09 — Pair-2 = user-selected A1+B1, then A1→A2 switch at prereg
-  lock: A1's files (sync-secret-scan.sh, pre-public-sweep.sh) NOT on
-  origin/main — live only in unmerged PR #25 + deployed copies. A2+B1 was
+  lock: A1's files (script-a.sh, script-b.sh) NOT on
+  origin/main — live only in unmerged PR <n> + deployed copies. A2+B1 was
   the disclosed runner-up in the same user question. Lesson: scout reports
   read disk/live state; prereg MUST re-verify against the branch BASE.
   Side observation (separate follow-up, not this eval): repo-A
-  main is behind the live system; stale PRs #25/#31/#32 hold deployed content
+  main is behind the live system; three stale PRs hold deployed content
 - 2026-07-09 (build session, post-eval) — Model tiering DECOUPLED from
   conductor into CLAUDE.md §Agent Spawn Model Tiering (unconditional, all
   spawn channels; Workflow agent() default inherits Fable = trap; fork always
@@ -142,8 +141,8 @@ portable-repo build go-ahead and its sequencing vs the pending /sync apply
 avoids divergence).
 Then: build the portable PRIVATE repo (skill/ install.sh docs/ examples/
 eval/ with EVAL_REPORT.md + EVAL_RESULTS.md + dispatches as evidence), run
-pre-public-sweep, and hand the public-flip decision to the user. Also on
-deck: E3 follow-up fixes on feat/codex-drift-remediate (see Todo).
+a pre-publication content sweep, and hand the public-flip decision to the user. Also on
+deck: E3 follow-up fixes on <branch-a> (see Todo).
 Directory: ~/conductor-eval/. Cross-session memory: durable lessons saved to
 the cross-session memory system (skill notes, codex gotchas, transcript usage
 row shapes).

@@ -37,7 +37,7 @@ set -uo pipefail
 
 input="$(cat)"
 
-# ── Stdin parse (jq only; copy pre-contribute-gate.sh idiom: allow on
+# ── Stdin parse (jq only; copy an existing PreToolUse hook's idiom: allow on
 #    empty / parse failure — never break the tool chain on a parser error).
 tool_name="$(jq -r '.tool_name // ""' 2>/dev/null <<<"$input")"
 

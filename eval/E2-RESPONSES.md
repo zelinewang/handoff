@@ -21,7 +21,7 @@ memory at session start. What leaked into my context BEFORE answering:
    numbers/details in my Q5 answer are file-derived.
 2. Auto-memory MEMORY.md index line for "conductor skill v1" — mentions
    "/sync apply 待跑" and "v2: hook闸" — overlaps fragments of Q4/Todo.
-3. Previous-session summary auto-loaded in context covers the obsession-game
+3. Previous-session summary auto-loaded in context covers the project-x
    work only (different project); inspected, no E2-relevant content.
 
 Everything below is answered from the on-disk ledger, with the leak surface
@@ -79,7 +79,7 @@ PROTOTYPE only; v1 enforcement is skill flow (user-confirmed decision).
 Registration is deferred until (a) a friction review, and (b) one REAL
 Agent-tool hook stdin payload is live-captured — the adjudication note
 records that the stdin JSON shape was confirmed structurally from
-`pre-contribute-gate.sh` + the Agent tool schema, not from a live Agent-hook
+an existing PreToolUse hook (personal config) + the Agent tool schema, not from a live Agent-hook
 payload. The dispatch also explicitly forbade modifying any settings file.
 
 ## Q5 — E1 pair-1 verdict on the pre-registered primary metric + structural lesson
