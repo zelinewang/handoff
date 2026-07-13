@@ -1,5 +1,9 @@
 # Handoff
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Built on Claude Code](https://img.shields.io/badge/built%20on-Claude%20Code-8A2BE2.svg)](https://docs.claude.com/en/docs/claude-code/overview)
+[![Shell](https://img.shields.io/github/languages/top/zelinewang/handoff.svg)](https://github.com/zelinewang/handoff)
+
 **You hand off work to hands — and any future session can pick up the handoff.**
 
 A token-tiered delegation protocol for agent harnesses. The lead model (the
@@ -19,6 +23,43 @@ costs more below it."
 
 Built and validated on Claude Code, portable to any harness with the two
 primitives above (`docs/porting.md`).
+
+## How work routes
+
+The protocol is a decision tree over one question: who should do this unit of
+work, and does it warrant the spec-file ceremony?
+
+```text
+                          incoming work unit
+                                  │
+        ┌─────────────────────────┼──────────────────────────┐
+        ▼                         ▼                           ▼
+ design · spec ·           ≤5-line trivial              real execution
+ adjudication              edit                         (read files, write
+        │                    │                           code, run tests)
+  BRAIN keeps it       BRAIN edits inline                       │
+  (its actual job)                                ┌─────────────┴─────────────┐
+                                                  ▼                           ▼
+                                          below break-even            at / above break-even
+                                          (<~200-line artifact        (≥200-line artifact OR
+                                           AND <~500-line read)        ≥500-line read, or must
+                                                  │                     survive handoff, or
+                                          solo is cheaper               parallel hands)
+                                          (+4.4% if dispatched)                │
+                                                                     hand off to HANDS
+                                                                     (model REQUIRED per spawn):
+                                                                     ├─ Agent(opus)  ← default
+                                                                     ├─ codex exec   model diversity
+                                                                     ├─ async queue  >30 min / cross-repo
+                                                                     └─ claude -p    third-party overflow
+```
+
+Hands that enter the full DISPATCH ceremony — because the work is above the
+measured boundary, handoff-bound, multi-dispatch, or parallel mutation — start
+cold and work from the file. Below-threshold tactical spawns and read-only
+consultations may instead use inline prompts under the skill's documented
+exceptions. Every hand still returns evidence, and the brain adjudicates on
+that evidence without re-reading the work.
 
 ---
 
@@ -128,6 +169,24 @@ solo. Above it, dispatch.
   +4.4%). The blind quality judge — with no knowledge of the measurement work —
   independently re-discovered the exact same counting bug in the artifact under
   review. Convergent validation: two independent paths found the same defect.
+
+### Runnable checks
+
+The two executable pieces of the skill — the adjudication helper and the
+dispatch-gate hook — ship with their own tests. From a clean checkout:
+
+```console
+$ bash skill/tests/adjudicate.test.sh
+TOTAL: 23  PASS: 23  FAIL: 0
+$ bash skill/tests/dispatch-gate.test.sh
+TOTAL: 11  PASS: 11  FAIL: 0
+```
+
+The committed [`eval/`](eval/) artifacts make the locked protocol, derived
+results, caveats, and worked examples inspectable. They do **not** include the
+private source transcripts, so raw token accounting cannot be reproduced from
+the public checkout alone. Given a source session transcript,
+`skill/scripts/token-report.sh` regenerates the per-model accounting.
 
 ## 4. When NOT to use handoff
 
