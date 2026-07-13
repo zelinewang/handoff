@@ -1,0 +1,44 @@
+name: Bug report
+description: Report a problem with the handoff skill or docs
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Handoff is a usage protocol over primitives your harness already has
+        (subagent spawn + a per-spawn model override), plus `install.sh` and an
+        eval bundle. Tell us your harness and which piece is wrong.
+  - type: dropdown
+    id: harness
+    attributes:
+      label: Harness
+      options:
+        - Claude Code
+        - Other (ported — see docs/porting.md)
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which piece?
+      options:
+        - SKILL.md guidance / routing
+        - install.sh
+        - Dispatch / STATE.md templates
+        - Eval bundle
+        - Docs
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Expected versus actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
