@@ -54,9 +54,12 @@ work, and does it warrant the spec-file ceremony?
                                                                      └─ claude -p    third-party overflow
 ```
 
-Every hand starts cold and works from the DISPATCH file alone; it returns
-evidence in a mandated format, and the brain adjudicates on that evidence
-without re-reading the work.
+Hands that enter the full DISPATCH ceremony — because the work is above the
+measured boundary, handoff-bound, multi-dispatch, or parallel mutation — start
+cold and work from the file. Below-threshold tactical spawns and read-only
+consultations may instead use inline prompts under the skill's documented
+exceptions. Every hand still returns evidence, and the brain adjudicates on
+that evidence without re-reading the work.
 
 ---
 
@@ -179,9 +182,11 @@ $ bash skill/tests/dispatch-gate.test.sh
 TOTAL: 11  PASS: 11  FAIL: 0
 ```
 
-The full pre-registered evaluation is reproducible from [`eval/`](eval/), and
-`skill/scripts/token-report.sh` regenerates the per-model token accounting from
-a session transcript.
+The committed [`eval/`](eval/) artifacts make the locked protocol, derived
+results, caveats, and worked examples inspectable. They do **not** include the
+private source transcripts, so raw token accounting cannot be reproduced from
+the public checkout alone. Given a source session transcript,
+`skill/scripts/token-report.sh` regenerates the per-model accounting.
 
 ## 4. When NOT to use handoff
 
