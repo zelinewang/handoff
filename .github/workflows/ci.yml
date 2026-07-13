@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Shell tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Syntax check (bash -n)
+        run: find . -name '*.sh' -not -path './.git/*' -print0 | xargs -0 -n1 bash -n
+
+      - name: Lint (shellcheck)
+        run: find . -name '*.sh' -not -path './.git/*' -print0 | xargs -0 shellcheck --severity=warning
+
+      - name: Run test suite
+        run: |
+          bash skill/tests/dispatch-gate.test.sh
+          bash skill/tests/adjudicate.test.sh

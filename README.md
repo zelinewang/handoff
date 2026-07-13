@@ -1,5 +1,6 @@
 # Handoff
 
+[![CI](https://github.com/zelinewang/handoff/actions/workflows/ci.yml/badge.svg)](https://github.com/zelinewang/handoff/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Built on Claude Code](https://img.shields.io/badge/built%20on-Claude%20Code-8A2BE2.svg)](https://docs.claude.com/en/docs/claude-code/overview)
 [![Shell](https://img.shields.io/github/languages/top/zelinewang/handoff.svg)](https://github.com/zelinewang/handoff)
