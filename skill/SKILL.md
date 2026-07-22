@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Token-tiered delegation protocol — the lead model (the "brain") designs, writes dispatch specs, and adjudicates evidence; cheaper executors (subagents on a strong non-lead model, an external CLI agent, an async agent queue) burn the execution tokens. Every dispatch is a spec file on disk (DISPATCH = prompt = record) plus a STATE ledger, so any session can hand off or resume losslessly. Use when delegating implementation to subagents/CLI-agents/an async queue, when saving lead-model tokens, when work must survive session handoff, or as the execution layer for /dev P7 on STANDARD+ tasks.
+description: Token-tiered delegation protocol — the lead model (the "brain") designs, writes dispatch specs, and adjudicates evidence; cheaper executors (subagents on a strong non-lead model, a heterogeneous frontier hand like Kimi K3, an external CLI agent, an async agent queue) burn the execution tokens. Includes MoA-leader contest mode (same spec to 2-3 heterogeneous hands, judge-owned oracle, every run doubles as a routing eval). Every dispatch is a spec file on disk (DISPATCH = prompt = record) plus a STATE ledger, so any session can hand off or resume losslessly. Use when delegating implementation to subagents/CLI-agents/an async queue, when saving lead-model tokens, when work must survive session handoff, or as the execution layer for /dev P7 on STANDARD+ tasks.
 ---
 
 # Handoff — Brain/Hands Delegation with Spec-Tracked Dispatch
@@ -83,7 +83,14 @@ incoming work unit
 ├─ brain's approach failed 3× / stuck ............. codex exec (heterogeneous reframe)
 ├─ large self-contained build-out ................. codex exec -s workspace-write (full hand-off via DISPATCH)
 ├─ >30 min / cross-repo / user leaving / cron ..... async agent queue (your team's dispatch system)
-└─ third-party model (GLM etc.) — optional ........ claude -p + env override (references/routing.md)
+├─ frontend / vision / web-agentic ................ Kimi K3 via claude -p env override —
+│                                                    PRIMARY for this domain (WebDev Arena #1);
+│                                                    backend contest-capable under hard-boundary
+│                                                    specs — references/routing.md ch. D
+└─ wide design space / high-stakes /
+   capability calibration ......................... MoA-leader contest: same spec → 2-3
+                                                     heterogeneous hands, judge-owned oracle,
+                                                     pre-registered rubric — routing.md §MoA-leader
 ```
 
 Channel mechanics, exact commands, and model notes: `references/routing.md`.
@@ -173,6 +180,12 @@ Goal / Now / Done / Todo / Blockers / Decisions / Next Session Entry Point.
   hung → set `status: abandoned` (workspace details preserved in the file),
   log in STATE.md, then re-dispatch or switch channel. Never leave `running`
   status unprobed across a session boundary.
+- **Watchdog channel choice** (field observation ×2, 2026-07-20): plain
+  background-shell watchdogs get reaped by the harness on long waits. For
+  detached long runs (channel D runners etc.) arm a supervisor that owns its
+  own process (Claude Code's Monitor tool) watching the run's exit file AND
+  pid liveness — silence must be distinguishable from a crash. Keep plain
+  background until-loops for short waits (CI checks) only.
 - Your cross-session memory system stores durable lessons, not task state.
 
 ## Brain Token Discipline
