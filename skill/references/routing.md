@@ -5,7 +5,9 @@ Channel mechanics for the Routing Tree in `SKILL.md`. Each channel documents
 were verified against the live binaries the reference implementation used,
 2026-07-09 (`codex` CLI 0.139.0) — flags not present in `--help` are not
 documented. Channel C (async agent queue) is written generically because the
-reference implementation used an internal tool; substitute your own.
+reference implementation used an internal tool; substitute your own. Channel D
+(Kimi K3) was live-verified 2026-07-19/20, including a head-to-head contest win
+on a real backend fix (see §MoA-leader mode).
 
 ## Channels at a glance
 
@@ -14,7 +16,7 @@ reference implementation used an internal tool; substitute your own.
 | A | `Agent` subagent | Opus 4.8 | default implementation w/ a clear spec | `SendMessage` |
 | B | `codex exec` | GPT-5.5 | independent review; 3×-stuck reframe; large build-out | `codex exec resume` |
 | C | async agent queue | your workers | >30 min / cross-repo / user away / cron | comment on the work item |
-| D | `claude -p` + env | third-party (GLM…) | optional heterogeneous overflow | n/a (stateless) |
+| D | `claude -p` + env override | Kimi K3 (other Anthropic-compatible models slot in the same way) | frontend/vision/web-agentic PRIMARY; backend contest-capable | n/a (stateless; re-dispatch fresh) |
 
 ## Channel A — Agent(opus) subagent  ← DEFAULT
 
@@ -132,34 +134,105 @@ tool-specific: before handing off a real DISPATCH, verify your queue's
 MCP/tool availability and its repo-checkout/isolation model, and fall back to a
 plain `git clone` if a managed checkout is unavailable.
 
-## Channel D — third-party via claude -p  (OPTIONAL · UNVERIFIED)
+## Channel D — Kimi K3 via claude -p env override  (VERIFIED 2026-07-19/20)
 
-> **UNVERIFIED on this machine — smoke-test before first real use.** No
-> third-party endpoint/token is configured here; treat every claim below as
-> unconfirmed until a live `claude -p` round-trip succeeds.
+> Any Anthropic-compatible third-party model slots in through the same env
+> override; this section documents Kimi K3 concretely because it is the one the
+> reference implementation verified end-to-end (vision, tool-use, long detached
+> runs, and a contest win on a real backend fix — see §MoA-leader mode).
 
-**When** — optional overflow to an Anthropic-compatible third-party model (e.g.
-GLM) when channels A/B/C are saturated. Never the default.
+**When** — K3 is the PRIMARY hand for frontend implementation, vision/UI review,
+and web-agentic work (it ranks #1 on WebDev Arena for frontend, above the
+frontier leads). Backend is NOT off-limits: under a hard-boundary spec, K3 beat
+an Opus 4.8 hand 99-96 in the first head-to-head contest (a Go parser
+round-trip fix, both submissions gate-clean — the margin was mechanism depth,
+test coverage, and TDD craft; the winning PR is public:
+https://github.com/zelinewang/claudemem/pull/10).
 
-**Invoke** (shell, env override):
+**Invoke** (shell, env override — endpoint per Moonshot's official
+Claude Code guide; key via env var only, never inline):
 ```bash
-# smoke-test FIRST:
-#   ANTHROPIC_BASE_URL=… ANTHROPIC_AUTH_TOKEN=… claude -p "reply OK"
-ANTHROPIC_BASE_URL="https://<provider>/anthropic" \
-ANTHROPIC_AUTH_TOKEN="<token>" \
-  claude -p "$(cat dispatch/NN-task.md)"
+ANTHROPIC_BASE_URL="https://api.moonshot.ai/anthropic" \
+ANTHROPIC_AUTH_TOKEN="$KIMI_API_KEY" \
+ANTHROPIC_DEFAULT_OPUS_MODEL="kimi-k3[1m]" \
+  claude -p --model "kimi-k3[1m]" "$(cat dispatch/NN-task.md)"
 ```
+For anything longer than a few minutes, wrap the launch in a **detached runner**
+(nohup + disown into a state dir holding `prompt.txt` / `log` / `pid` / `exit`)
+so the run survives parent-process cleanup, and watch it with a monitor that
+checks BOTH the exit file AND pid liveness — silence must be distinguishable
+from a crash. Field observation (×2, 2026-07-20): plain background-shell
+watchdogs get reaped on long waits; a supervisor with its own process survives.
+Slim the subprocess for `-p` runs (`--strict-mcp-config`) — a dispatch dragging
+a dozen MCP servers is the thing that gets batch-killed.
 
-**Steer** — n/a. `claude -p` is stateless per invocation; for rework re-dispatch a
-fresh prompt, or fall back to Channel A/B (which have real multi-turn steering).
+**Steer** — n/a between runs: K3 is *preserved-thinking sensitive* — one LONG
+continuous run beats many short relays (thinking history dies across cold
+starts), and it must never resume another model's partial work. Rework = a
+fresh self-contained dispatch that cites the prior returned evidence.
 
-**Cost & limits** — billed by the third-party provider, off the Anthropic quota.
-Compatibility, tool support, and sandbox behavior are provider-dependent and
-unproven here — verify tool-use and file-write behavior in the smoke test before
-trusting it with a real DISPATCH.
+**Rules of engagement (K3-specific, from its official limitations)**:
+- Every dispatch carries HARD boundaries — scope fence, forbidden paths,
+  conservative-option rule for ambiguity. K3 over-improvises without them;
+  under them the observed behavior is excellent (honest no-ops, evidence-backed
+  pushback, declared skips) across all verified orders.
+- Vision: have K3 self-review its own screenshots in-loop; cross-validate
+  visual verdicts with a second model (e.g. a Gemini image check) before
+  accepting them.
+- Video: the K3 API path is frames-only, NO audio — keep a full-modal model in
+  the loop for anything where audio matters.
 
-**Evidence return** — `claude -p` prints the final message to stdout; capture and
-adjudicate as with Channel B.
+**Cost & limits** — billed by Moonshot, fully off the Anthropic quota (genuine
+capacity relief + real model diversity). Stateless per invocation. Failure
+mode: API 429 "engine overloaded" can kill a long run with zero output — back
+off ~30 min and re-dispatch the SAME spec (observed: the retry delivered the
+full task); after repeated 429s, downgrade to Channel A and record the switch.
+
+**Evidence return** — final message to stdout (or the detached runner's `log`);
+evidence file discipline per the DISPATCH template applies unchanged. A
+K3-tailored template ships in `templates/DISPATCH-K3.md`.
+
+## MoA-leader mode  (heterogeneous contest; v0.1, hardened 2026-07-20)
+
+One brief → 2-3 heterogeneous hands implement independently → the brain judges
+and ships the winner. Unifies supervisor-worker, cross-model review, and
+leader-workers in one cycle — pure orchestration over channels A/B/D, no new
+infra.
+
+**When to fire** (a notch in the routing tree, NOT the default): wide design
+space (architecture options, API shape, UX direction); high-stakes or
+hard-to-reverse decisions needing independent derivations; capability
+calibration (every contest doubles as a routing eval). NOT for deterministic
+execution — single hand + review is cheaper and equal there.
+
+**Protocol**:
+0. BEFORE fan-out the judge builds an INDEPENDENT black-box oracle (isolated
+   env, golden fixture, mechanical PASS/FAIL) and records the baseline failure
+   signature. This is what makes every hand's self-report verifiable. Also:
+   pre-register the scoring rubric in the brief, and scope every MUST gate
+   explicitly (files/package/tree — an ambiguous tree-wide gate over a repo
+   with pre-existing debt forks into letter-vs-spirit readings).
+1. ONE brief, identical for all hands (verify byte symmetry modulo
+   paths/branches with `diff`); each hand gets its own worktree.
+2. Fan out in parallel (channel A + channel D is the proven pair). More voices
+   than the brain can adjudicate = verification theater.
+3. Adversarially re-verify every claim: judge-rerun the oracle on each hand's
+   build; verify test-first by cherry-picking each hand's new test files alone
+   onto the clean base (they must fail there); re-run gates capturing true
+   exit codes; arbitrate inter-hand factual disagreements with the judge's own
+   probes.
+4. Score per the pre-registered rubric; winner ships through the normal PR
+   flow; graft any superior isolated ideas from the runner-up with
+   attribution; log the datapoint (scores + decisive axes) to the contest
+   ledger. Routing weights move on TREND, never on n=1.
+
+**Contest #1** (2026-07-20, the run that hardened v0 → v0.1): K3 99 vs
+Opus 4.8 96 on a Go CLI parser round-trip defect — both hands gate-clean and
+oracle-perfect; the decisive axes were mechanism depth, ∖n-preserving
+round-trip semantics, end-to-end + backward-compat test coverage, visible
+RED→fix commit history, and forensic accuracy (its corpus counts reproduced
+exactly by the judge's independent probes). Winning PR (public):
+https://github.com/zelinewang/claudemem/pull/10
 
 ---
 
