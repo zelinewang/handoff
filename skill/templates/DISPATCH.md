@@ -33,7 +33,10 @@ write "and also…", split into another dispatch.>
 ## Acceptance Criteria
 
 <!-- Written BEFORE execution. Each item mechanically checkable —
-     a command output or a directly observable fact, never "code is clean". -->
+     a command output or a directly observable fact, never "code is clean".
+     Every gate names its EXACT scope (files/package/tree): a tree-wide gate
+     over a repo with pre-existing debt ("gofmt -l . empty") forks into
+     letter-vs-spirit readings — MoA contest #1 lesson, 2026-07-20. -->
 
 - [ ] <criterion 1>
 - [ ] <criterion 2>
